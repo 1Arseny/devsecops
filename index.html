@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevSecOps Курс</title>
+  <link href="./dist/output.css" rel="stylesheet" />
+</head>
+<body>
+
+<section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-16 gap-6 bg-[#0f172a] text-gray-100">
+   <!-- 🖼 canvas: анимация точек -->
+  <canvas id="devsecops-canvas" class="w-full h-full absolute inset-0 pointer-events: auto"></canvas>
+
+  <!-- 🧭 svg: статическая сетка -->
+  <svg class="absolute w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.5" />
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grid)" />
+  </svg>
+</div>
+  <!-- Баннеры -->
+  <div class="flex flex-wrap justify-center gap-4 max-w-4xl">
+    <div class="bg-indigo-600 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md">
+      🗓 Старт курса — 20 июня 2025
+    </div>
+    <div class="bg-gray-800 text-gray-300 text-sm px-4 py-2 rounded-xl shadow-md">
+      🌐 Онлайн
+    </div>
+    <div class="bg-gray-800 text-gray-300 text-sm px-4 py-2 rounded-xl shadow-md">
+      🛠 Практика на 100%
+    </div>
+  </div>
+
+  <!-- Заголовок -->
+  <h1 class="text-4xl md:text-6xl font-extrabold mb-4 max-w-4xl leading-tight tracking-tight">
+    <span class="text-indigo-400">DevSecOps</span> — автоматизируй безопасность<br class="hidden sm:inline" />
+    от кода до продакшна
+  </h1>
+
+  <!-- Подзаголовок -->
+  <p class="text-lg md:text-xl text-gray-400 mb-6 max-w-2xl">
+    Онлайн-курс, который превращает DevOps-инженеров и безопасников в DevSecOps-профи
+    с практикой CI/CD, Docker, Kubernetes и безопасностью в облаках.
+  </p>
+
+  <!-- Кнопка -->
+  <a href="#"
+     class="bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition">
+    🚀 Записаться на курс
+  </a>
+</section>
+<section id="about" class="relative z-10 py-24 text-gray-100 overflow-hidden bg-[#0f172a]">
+  <div class="relative max-w-7xl mx-auto px-6">
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-10">
+    <!-- 📐 SVG Grid -->
+    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+        <pattern id="devops-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#334155" stroke-width="0.5" />
+        </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#devops-grid)" />
+    </svg>
+
+    <!-- 💠 DevOps icons -->
+    <div class="absolute top-10 left-10 text-7xl text-indigo-900 opacity-20 rotate-[15deg]">⚙️</div>
+    <div class="absolute bottom-10 right-10 text-7xl text-indigo-900 opacity-20 rotate-[-10deg]">☁️</div>
+    <div class="absolute top-1/2 left-1/2 text-7xl text-indigo-900 opacity-10 transform -translate-x-1/2 -translate-y-1/2">🔐</div>
+    </div>
+
+    <div class="fade-up opacity-0 translate-y-6 transition-all duration-700 delay-[100ms]">
+        <h2 class="text-4xl md:text-5xl font-bold mb-4">О курсе</h2>
+        <p class="text-lg text-gray-400 max-w-3xl mb-12">
+        Онлайн-курс, который научит вас защищать инфраструктуру, код и пайплайны — с практикой, автоматизацией и современными DevSecOps-подходами.
+        </p>
+    </div>
+
+    <!-- Иконки -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 mb-20">
+        <div class="fade-up opacity-0 translate-y-6 transition-all duration-700 delay-[200ms] flex flex-col items-center text-center">
+        <div class="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500 text-3xl flex items-center justify-center shadow-md">
+            🤖
+        </div>
+        <p class="mt-3 text-sm text-gray-300">Автоматизация</p>
+        </div>
+        <div class="fade-up opacity-0 translate-y-6 transition-all duration-700 delay-[300ms] flex flex-col items-center text-center">
+        <div class="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500 text-3xl flex items-center justify-center shadow-md">
+            ☁️
+        </div>
+        <p class="mt-3 text-sm text-gray-300">Облака</p>
+        </div>
+        <div class="fade-up opacity-0 translate-y-6 transition-all duration-700 delay-[400ms] flex flex-col items-center text-center">
+        <div class="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500 text-3xl flex items-center justify-center shadow-md">
+            🔐
+        </div>
+        <p class="mt-3 text-sm text-gray-300">Безопасность</p>
+        </div>
+        <div class="fade-up opacity-0 translate-y-6 transition-all duration-700 delay-[500ms] flex flex-col items-center text-center">
+        <div class="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500 text-3xl flex items-center justify-center shadow-md">
+            ⚙️
+        </div>
+        <p class="mt-3 text-sm text-gray-300">CI/CD</p>
+        </div>
+        <div class="fade-up opacity-0 translate-y-6 transition-all duration-700 delay-[600ms] flex flex-col items-center text-center">
+        <div class="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500 text-3xl flex items-center justify-center shadow-md">
+            🧱
+        </div>
+        <p class="mt-3 text-sm text-gray-300">Инфраструктура</p>
+        </div>
+    </div>
+
+    <!-- Остальные блоки (Why, Skills, Results) -->
+    <!-- Карточки блоков -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+  <!-- 🚀 Почему этот курс -->
+  <div class="feature-card opacity-0 translate-y-6 transition-all duration-700 ease-out delay-[100ms] bg-[#1e293b] border border-indigo-600/20 rounded-2xl p-6 shadow-xl flex flex-col gap-4">
+    <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+      🚀 Почему этот курс — лучшее, что вы можете сделать для своей карьеры:
+    </h3>
+    <ul class="text-gray-300 space-y-3 text-sm">
+      <li><span class="text-indigo-300">✅</span> 90% практики — от CI/CD пайплайнов до Kubernetes и Zero Trust.</li>
+      <li><span class="text-indigo-300">🧠</span> Авторский подход — эксперт с 15+ лет опыта, DevSecBox, конференции.</li>
+      <li><span class="text-indigo-300">🛠️</span> Актуальные технологии — Terraform, GitLab, Docker, Prometheus, Vault и др.</li>
+      <li><span class="text-indigo-300">📌</span> Реальные кейсы — а не "учебные демки".</li>
+    </ul>
+  </div>
+
+  <!-- 🔐 Курс научит -->
+  <div class="feature-card opacity-0 translate-y-6 transition-all duration-700 ease-out delay-[200ms] bg-[#1e293b] border border-indigo-600/20 rounded-2xl p-6 shadow-xl flex flex-col gap-4">
+    <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+      🔐 Курс научит вас:
+    </h3>
+    <ul class="text-gray-300 space-y-3 text-sm">
+      <li><span class="text-green-400">🔒</span> Встраивать безопасность на всех этапах разработки</li>
+      <li><span class="text-green-400">⚙️</span> Автоматизировать защиту инфраструктуры и пайплайнов</li>
+      <li><span class="text-green-400">🧪</span> Управлять уязвимостями и соответствием стандартам</li>
+      <li><span class="text-green-400">☁️</span> Защищать облачные и on-premise среды</li>
+      <li><span class="text-green-400">🛡️</span> Применять Zero Trust стратегию на практике</li>
+    </ul>
+  </div>
+
+  <!-- 📈 Результаты -->
+  <div class="feature-card opacity-0 translate-y-6 transition-all duration-700 ease-out delay-[300ms] bg-[#1e293b] border border-indigo-600/20 rounded-2xl p-6 shadow-xl flex flex-col gap-4">
+    <h3 class="text-lg font-bold text-indigo-400 flex items-center gap-2">
+      📈 Результаты обучения:
+    </h3>
+    <ul class="text-gray-300 space-y-3 text-sm">
+      <li><span class="text-yellow-300">📐</span> Выстраивать DevSecOps-процессы с нуля</li>
+      <li><span class="text-yellow-300">🔗</span> Интегрировать безопасность в CI/CD и облака</li>
+      <li><span class="text-yellow-300">🧰</span> Использовать передовые инструменты автоматизации</li>
+      <li><span class="text-yellow-300">📜</span> Применять подходы Zero Trust и Compliance as Code</li>
+      <li><span class="text-yellow-300">💼</span> Повысить свою ценность на рынке ИБ и DevOps</li>
+    </ul>
+  </div>
+
+</div>
+    </div>
+</section>
+<section id="features" class="relative bg-[#0f172a] text-gray-100 py-24 px-6">
+  <div class="max-w-7xl mx-auto space-y-24">
+
+    <!-- 🔧 Чем курс отличается -->
+    <div class="text-center">
+      <h2 class="text-4xl font-bold mb-8">Чем курс отличается</h2>
+      <div class="grid gap-8 md:grid-cols-3 text-left">
+        <div class="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-indigo-600/20">
+          <div class="text-3xl mb-4">📦</div>
+          <h3 class="text-lg font-semibold mb-2 text-indigo-400">Реальные кейсы</h3>
+          <p class="text-gray-300 text-sm">Основан на реальных задачах из ИТ-компаний и DevOps-практики.</p>
+        </div>
+        <div class="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-indigo-600/20">
+          <div class="text-3xl mb-4">👨‍💻</div>
+          <h3 class="text-lg font-semibold mb-2 text-indigo-400">Практик-преподаватель</h3>
+          <p class="text-gray-300 text-sm">Автор курса — эксперт с 15+ лет опыта и DevSec инструментами.</p>
+        </div>
+        <div class="bg-[#1e293b] p-6 rounded-2xl shadow-lg border border-indigo-600/20">
+          <div class="text-3xl mb-4">⚙️</div>
+          <h3 class="text-lg font-semibold mb-2 text-indigo-400">Много практики</h3>
+          <p class="text-gray-300 text-sm">CI/CD, Kubernetes, Chaos Engineering, Zero Trust — в практике.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+<section id="for-whom" class="relative bg-[#0f172a] text-gray-100 py-24 px-6">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-4xl font-bold mb-4">Для кого этот курс</h2>
+    <p class="text-lg text-gray-400 mb-12">Программа подойдёт вам, если вы хотите совмещать DevOps и безопасность на практике</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+      
+      <!-- Card 1 -->
+      <div class="flex items-start gap-4 p-6 rounded-2xl bg-[#1e293b] border border-indigo-600/20 shadow-xl">
+        <div class="text-green-400 text-2xl mt-1">✅</div>
+        <div>
+          <h3 class="text-md font-semibold text-indigo-400 mb-1">DevOps и SRE</h3>
+          <p class="text-sm text-gray-300">Хотят углубиться в безопасность, внедрять DevSecOps в пайплайны и инфраструктуру</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="flex items-start gap-4 p-6 rounded-2xl bg-[#1e293b] border border-indigo-600/20 shadow-xl">
+        <div class="text-green-400 text-2xl mt-1">✅</div>
+        <div>
+          <h3 class="text-md font-semibold text-indigo-400 mb-1">Инфобез-специалисты</h3>
+          <p class="text-sm text-gray-300">Нужна автоматизация процессов, CI/CD защита и контроль за инфраструктурой</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="flex items-start gap-4 p-6 rounded-2xl bg-[#1e293b] border border-indigo-600/20 shadow-xl">
+        <div class="text-green-400 text-2xl mt-1">✅</div>
+        <div>
+          <h3 class="text-md font-semibold text-indigo-400 mb-1">Разработчики</h3>
+          <p class="text-sm text-gray-300">Хотят встроить безопасность в жизненный цикл разработки (Secure SDLC)</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="flex items-start gap-4 p-6 rounded-2xl bg-[#1e293b] border border-indigo-600/20 shadow-xl">
+        <div class="text-green-400 text-2xl mt-1">✅</div>
+        <div>
+          <h3 class="text-md font-semibold text-indigo-400 mb-1">Начинающие специалисты</h3>
+          <p class="text-sm text-gray-300">Знают Linux, умеют кодить и хотят стартовать карьеру в DevSecOps</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section id="course-program" class="relative bg-[#0f172a] text-gray-100 py-24 px-6">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-4">Программа курса</h2>
+    <p class="text-gray-400 text-center mb-12">9 мощных модулей — 48 лекций + практики</p>
+
+    <div id="accordion" class="space-y-4">
+      <!-- 1 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Введение в DevSecOps и SSDLC</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Основы DevSecOps, роли в безопасности, этапы SSDLC и первые инструменты для внедрения процессов.
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Безопасность Linux, автоматизация на Python/Go</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Практики hardening, скрипты на Python и Go, автоматизация безопасности в хостах.
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Инфраструктура как код, DAST/SAST, Vault</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Terraform, секьюрность IaC, сканеры кода и хранилища секретов HashiCorp Vault.
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Безопасность Docker и Kubernetes</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Сканирование образов, безопасность кластеров, admission controllers, сетевые политики.
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Облачная инфраструктура, Terraform, Ansible</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Безопасная настройка облаков (AWS/GCP), автоматизация развёртывания и секрет-менеджмент.
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Monitoring, Logging, Alerting</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Наблюдаемость и безопасность: Prometheus, Grafana, Loki, инциденты, алерты.
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Уязвимости, патчи, compliance, Zero Trust</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Управление уязвимостями, политика обновлений, соответствие стандартам, Zero Trust подход.
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Advanced техники: Canary Deployments, SBOM, eBPF</span>
+          <span class="text-sm text-gray-400">Старт: скоро</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Практика Canary, Software Bill of Materials, runtime-мониторинг через eBPF.
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="accordion-item border border-indigo-600/20 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center px-6 py-4 bg-[#1e293b] hover:bg-[#273549] transition text-left">
+          <span class="font-semibold text-indigo-400">✅ Финальный экзамен в духе OSCP</span>
+          <span class="text-sm text-gray-400">Старт: финал курса</span>
+        </button>
+        <div class="accordion-content px-6 py-4 text-sm text-gray-300 hidden bg-[#1e293b]/50">
+          Проектное задание: построение защищённого пайплайна с анализом уязвимостей и аудитом.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+
+
+</html>
