@@ -1,9 +1,16 @@
 import { animateHeroSection } from './sections/hero.js';
-import { animateAboutSection } from './sections/about.js';
-import { initCourseAccordion } from './sections/courseAccordion.js';
+import { initwhycourseAnimation } from './sections/why-course.js';
+import { initSkillsCanvasAnimation } from './sections/skills-canvas.js';
+import { initcourseprogramAnimation } from './sections/course-program.js';
+import { initrofileresultSection } from './sections/profile-result.js';
+import { initAuthorSection } from './sections/author.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   animateHeroSection();
-  animateAboutSection();
-  initCourseAccordion();
+  initwhycourseAnimation();
+  initSkillsCanvasAnimation();
+  initcourseprogramAnimation();
+  initrofileresultSection();
+  initAuthorSection();
+
 });
