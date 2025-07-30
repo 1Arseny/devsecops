@@ -9,4 +9,12 @@
   .animate-pulse-glow {
     animation: pulse-glow 2.2s infinite cubic-bezier(0.4,0,0.2,1);
   }
+  @keyframes pulse-glow-case {
+    0%, 100% { opacity: 0.13; transform: scale(1);}
+    50% { opacity: 0.29; transform: scale(1.11);}
+  }
+  .animate-case-glow { animation: pulse-glow-case 2.5s infinite cubic-bezier(.4,0,.2,1); }
+
+  .vortex-hide { opacity: 0; transform: scale(0.8) rotate(-30deg) translateY(40px); }
+  .vortex-show { opacity: 1; transform: scale(1) rotate(0deg) translateY(0); transition: all 1s cubic-bezier(.53,.16,.33,1.05); }
 }
