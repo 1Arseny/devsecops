@@ -6,11 +6,13 @@ export function initLearningFormatSection() {
   const output = section.querySelector('#terminal-lines');
   if (!output) return;
 
+  // Тексты из раздела «Формат и организация»
   const steps = [
-    '[+] Доступ к видео, практике и материалам',
-    '[+] Автоматическая проверка заданий',
-    '[+] Финальный экзамен в стиле OSCP',
-    '[+] Поддержка от экспертов и выпускников',
+    '[✓] Онлайн-формат, материалы доступны 24/7',
+    '[✓] Живые сессии + видео в записи',
+    '[✓] Практика в каждом модуле',
+    '[✓] Финальный экзамен: автоматизированное тестирование в духе OSCP',
+    '[✓] Поддержка преподавателей и закрытое сообщество выпускников',
     '$ _'
   ];
 
@@ -18,26 +20,37 @@ export function initLearningFormatSection() {
   const observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting && !shown) {
       shown = true;
-      printLines();
+      printNextLine();
       observer.disconnect();
     }
   }, { threshold: 0.15 });
   observer.observe(section);
 
-  function printLines(idx = 0) {
-    if (idx >= steps.length) return;
-    const span = document.createElement('span');
-    span.style.opacity = '0';
-    span.style.display = 'block';
-    span.textContent = steps[idx];
-    output.appendChild(span);
-    setTimeout(() => {
-      span.style.transition = 'opacity 0.4s';
-      span.style.opacity = '1';
-      setTimeout(() => printLines(idx + 1), 420);
-    }, 120);
+  // Печатаем строку посимвольно, затем переходим к следующей
+  function typeLine(text, span, i = 0) {
+    if (i > text.length) return Promise.resolve();
+    span.textContent = text.slice(0, i);
+    return new Promise(res => setTimeout(res, 14)).then(() => typeLine(text, span, i + 1));
   }
 
+  async function printNextLine(idx = 0) {
+    if (idx >= steps.length) return;
+    const span = document.createElement('span');
+    span.style.display = 'block';
+    span.style.opacity = '0';
+    output.appendChild(span);
+
+    // плавное появление строки
+    requestAnimationFrame(() => {
+      span.style.transition = 'opacity .35s ease';
+      span.style.opacity = '1';
+    });
+
+    await typeLine(steps[idx], span);
+    setTimeout(() => printNextLine(idx + 1), 180);
+  }
+
+  // ---- Анимированный фон (канвас) ----
   const canvas = document.getElementById('learning-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -50,14 +63,14 @@ export function initLearningFormatSection() {
 
   function draw(time) {
     ctx.clearRect(0, 0, w, h);
-    for(let i=0;i<3;i++) {
+    for (let i = 0; i < 3; i++) {
       ctx.save();
-      let y = (h/4) + (i*h/5) + Math.sin(time/900+i)*18;
-      ctx.globalAlpha = 0.08 + 0.05*Math.sin(time/600+i*2.2);
+      const y = (h / 4) + (i * h / 5) + Math.sin(time / 900 + i) * 18;
+      ctx.globalAlpha = 0.08 + 0.05 * Math.sin(time / 600 + i * 2.2);
       ctx.fillStyle = '#21f1cf';
       ctx.shadowColor = '#23f9e7';
       ctx.shadowBlur = 20;
-      ctx.fillRect(0, y, w, 9 + Math.sin(time/1200+i)*5);
+      ctx.fillRect(0, y, w, 9 + Math.sin(time / 1200 + i) * 5);
       ctx.restore();
     }
     requestAnimationFrame(draw);
