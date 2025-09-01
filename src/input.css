@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* --- твои существующие утилиты --- */
 @layer utilities {
   @keyframes pulse-glow {
     0%, 100% { opacity: 0.18; transform: scale(1);}
@@ -9,6 +11,7 @@
   .animate-pulse-glow {
     animation: pulse-glow 2.2s infinite cubic-bezier(0.4,0,0.2,1);
   }
+
   @keyframes pulse-glow-case {
     0%, 100% { opacity: 0.13; transform: scale(1);}
     50% { opacity: 0.29; transform: scale(1.11);}
@@ -17,17 +20,8 @@
 
   .vortex-hide { opacity: 0; transform: scale(0.8) rotate(-30deg) translateY(40px); }
   .vortex-show { opacity: 1; transform: scale(1) rotate(0deg) translateY(0); transition: all 1s cubic-bezier(.53,.16,.33,1.05); }
-}
-.reveal {
-  opacity: 0;
-  transform: translateY(1.5rem); /* translate-y-6 */
-}
 
-.reveal.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-@layer utilities {
+  /* --- твоя градиентная анимация --- */
   @keyframes gradientShift {
     0%, 100% {
       background: radial-gradient(ellipse 40% 28% at 50% 55%, rgba(34,197,94,0.22) 0%, transparent 80%);
@@ -39,7 +33,32 @@
   .animate-gradient-shift {
     animation: gradientShift 12s ease-in-out infinite;
   }
+
+  /* --- НОВОЕ: анимации, которые запускаются ТОЛЬКО на hover --- */
+  @keyframes hover-pop {
+    0%   { transform: scale(1); }
+    60%  { transform: scale(1.06); }
+    100% { transform: scale(1.03); }
+  }
+  .animate-hover-pop:hover {
+    animation: hover-pop 320ms cubic-bezier(.2,.8,.2,1) both;
+  }
+
+  @keyframes hover-tilt {
+    0%   { transform: rotate(0deg); }
+    50%  { transform: rotate(1.5deg); }
+    100% { transform: rotate(0.5deg); }
+  }
+  .animate-hover-tilt:hover {
+    animation: hover-tilt 320ms ease-out both;
+  }
 }
+
+/* твои reveal-утилиты оставил как есть */
+.reveal { opacity: 0; transform: translateY(1.5rem); }
+.reveal.show { opacity: 1; transform: translateY(0); }
+
+/* FAQ как было */
 .faq-answer {
   max-height: 0;
   opacity: 0;
@@ -47,4 +66,4 @@
   transition: max-height .35s ease, opacity .35s ease;
 }
 .faq-answer.open { opacity: 1; }
-
+  

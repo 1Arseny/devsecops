@@ -265,72 +265,73 @@
 </section>
 <section id="authors" class="relative w-full flex flex-col items-center justify-center bg-[#0f172a] text-gray-100 py-20 px-4 gap-10 overflow-hidden">
   <canvas id="authors-canvas" class="absolute left-0 top-0 w-full h-full z-0 pointer-events-none"></canvas>
+
   <!-- Лёгкий фон-сияние -->
   <div class="pointer-events-none absolute inset-0 -z-0 flex items-center justify-center">
     <div class="w-[42vw] h-[42vw] min-w-[320px] min-h-[320px] rounded-full bg-indigo-600 blur-3xl opacity-10"></div>
   </div>
+
   <div class="relative z-10 max-w-6xl w-full flex flex-col items-center">
     <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 flex items-center gap-3">
       <span class="text-indigo-400 text-4xl">👨‍🏫</span>
       <span class="drop-shadow-[0_3px_8px_rgba(99,102,241,0.16)]">Преподаватели курса</span>
     </h2>
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full">
 
-      <!-- Илья Сафронов -->
-      <div class="flex flex-col items-center bg-[#1e293b] bg-opacity-60 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-indigo-600/20 author-card opacity-0 translate-y-10 transition-all duration-1000">
+      <!-- Секретный эксперт — INDIGO -->
+      <div class="group flex flex-col items-center bg-[#1e293b] bg-opacity-60 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-indigo-600/20 transition-all duration-700 hover:-translate-y-2 hover:bg-opacity-80 hover:border-indigo-400/40 hover:shadow-[0_0_40px_rgba(99,102,241,0.25)]">
         <div class="relative mb-6">
           <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
             <div class="w-28 h-28 rounded-full bg-indigo-400 opacity-25 blur-2xl animate-pulse-glow"></div>
           </div>
-          <div class="relative w-28 h-28 rounded-full overflow-hidden bg-indigo-700 flex items-center justify-center z-10 border-4 border-indigo-400 shadow-md">
+          <div class="relative w-28 h-28 rounded-full overflow-hidden bg-indigo-700 flex items-center justify-center z-10 border-4 border-indigo-400 shadow-md animate-hover-pop animate-hover-tilt">
             <span class="text-[56px] text-indigo-100">👤</span>
           </div>
         </div>
-        <div class="text-lg font-semibold mb-2 text-indigo-100 text-center">Vasiliy</div>
-        <div class="text-gray-200 text-sm mb-2 text-center font-medium">
+        <div class="text-lg font-semibold mb-2 text-indigo-100 text-center">Секретный эксперт</div>
+        <div class="text-indigo-200 text-sm mb-2 text-center font-medium">
           Энтузиаст zerotrust, Purple Team, член ПК Highload.
         </div>
-        <!-- <div class="text-indigo-200/80 text-xs text-center">
-          Внедрял Zero Trust, строил Red/Purple SOC.
-        </div> -->
       </div>
 
-      <!-- Дмитрий Тарадай -->
-      <div class="flex flex-col items-center bg-[#1e293b] bg-opacity-60 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-indigo-600/20 author-card opacity-0 translate-y-10 transition-all duration-1000">
+      <!-- Дмитрий Тарадай — EMERALD -->
+      <div class="group flex flex-col items-center bg-[#1e293b] bg-opacity-60 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-indigo-600/20 transition-all duration-700 hover:-translate-y-2 hover:bg-opacity-80 hover:border-indigo-400/40 hover:shadow-[0_0_40px_rgba(99,102,241,0.25)]">
         <div class="relative mb-6">
           <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-            <div class="w-28 h-28 rounded-full bg-indigo-400 opacity-20 blur-2xl animate-pulse-glow"></div>
+            <div class="w-28 h-28 rounded-full bg-emerald-400 opacity-20 blur-2xl animate-pulse-glow"></div>
           </div>
-          <div class="relative w-28 h-28 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center z-10 border-4 border-gray-400 shadow-md">
-            <span class="text-[56px] text-gray-200">👤</span>
+          <div class="relative w-28 h-28 rounded-full overflow-hidden bg-indigo-700 flex items-center justify-center z-10 border-4 border-indigo-400 shadow-md animate-hover-pop animate-hover-tilt">
+            <span class="text-[56px] text-indigo-100">👤</span>
           </div>
         </div>
-        <div class="text-lg font-semibold mb-2 text-gray-200 text-center">Дмитрий Тарадай</div>
-        <div class="text-gray-400 text-sm text-center">
-          Инженер-автоматизатор, выпускник ТУСУР, практик DevSecOps-подходов в частных проектах. Разработчик расширения DevSecBox для Burp Suite
-убрать выпускник ТУСУР
+        <div class="text-lg font-semibold mb-2 text-indigo-100 text-center">Дмитрий Тарадай</div>
+        <div class="text-indigo-200 text-sm mb-2 text-center font-medium">
+          Инженер-автоматизатор, практик DevSecOps-подходов в частных проектах. Разработчик расширения DevSecBox для Burp Suite
         </div>
       </div>
 
-      <!-- Максим Казенков -->
-      <div class="flex flex-col items-center bg-[#1e293b] bg-opacity-60 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-indigo-600/20 author-card opacity-0 translate-y-10 transition-all duration-1000">
+      <!-- Максим Казенков — ROSE -->
+      <div class="group flex flex-col items-center bg-[#1e293b] bg-opacity-60 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-emerald-500/20 transition-all duration-700 hover:-translate-y-2 hover:bg-opacity-80 hover:border-emerald-400/40 hover:shadow-[0_0_40px_rgba(16,185,129,0.25)]">
         <div class="relative mb-6">
           <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-            <div class="w-28 h-28 rounded-full bg-indigo-400 opacity-18 blur-2xl animate-pulse-glow"></div>
+            <div class="w-28 h-28 rounded-full bg-rose-400 opacity-20 blur-2xl animate-pulse-glow"></div>
           </div>
-          <div class="relative w-28 h-28 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center z-10 border-4 border-gray-400 shadow-md">
-            <span class="text-[56px] text-gray-200">👤</span>
+          <div class="relative w-28 h-28 rounded-full overflow-hidden bg-indigo-700 flex items-center justify-center z-10 border-4 border-indigo-400 shadow-md animate-hover-pop animate-hover-tilt">
+            <span class="text-[56px] text-rose-100">👤</span>
           </div>
         </div>
-        <div class="text-lg font-semibold mb-2 text-gray-200 text-center">Максим Казенков</div>
-        <div class="text-gray-400 text-sm text-center">
-          Специалист по автоматизации, разработке и безопасности инфраструктурных решений.
+        <div class="text-lg font-semibold mb-2 text-indigo-100 text-center">Максим Казенков</div>
+        <div class="text-indigo-200 text-sm mb-2 text-center font-medium">
+          Эксперт в направлении информационной безопасности, обладатель профильных сертификатов и багхантер на досуге.
         </div>
       </div>
 
     </div>
   </div>
 </section>
+
+
 <section id="learning-format" class="relative w-full flex flex-col items-center justify-center bg-[#101820] text-[#90f7ec] py-20 px-4 overflow-hidden">
   <!-- Анимированный фон -->
   <canvas id="learning-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none"></canvas>
