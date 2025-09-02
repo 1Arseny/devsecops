@@ -59,3 +59,240 @@ export function initPriceSectionCanvas() {
   setTimeout(resize, 200);
   requestAnimationFrame(draw);
 }
+
+// price-section form logic
+export function initPriceForm() {
+  const form = document.getElementById('leadForm');
+  if (!form) return;
+
+  const el = (id) => document.getElementById(id);
+  const endpoint = 'https://services-webinar-pentest-170325.codeby.school/send_lead_extended.php';
+
+  const state = { submitting: false };
+
+  const show = (elem, on) => elem.classList.toggle('hidden', !on);
+
+  const validators = {
+    name(v) {
+      return /^[A-Za-zА-Яа-яЁё\s'-]{2,60}$/.test(v.trim());
+    },
+    email(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+    },
+    phone(v) {
+      const digits = v.replace(/\D+/g, '');
+      // допускаем +7XXXXXXXXXX или 8XXXXXXXXXX
+      if (digits.length === 11 && (digits.startsWith('7') || digits.startsWith('8'))) return true;
+      if (digits.length === 12 && v.trim().startsWith('+7')) return true;
+      return false;
+    },
+    comment(v) {
+      return v.length <= 1000;
+    },
+    consentRequired(on) {
+      return !!on;
+    }
+  };
+
+  function setError(input, errEl, hasError) {
+    if (!input || !errEl) return;
+    input.classList.toggle('border-red-500', hasError);
+    input.classList.toggle('focus:ring-red-400', hasError);
+    show(errEl, hasError);
+  }
+
+  function isFormValid() {
+    const name = el('name')?.value ?? '';
+    const email = el('email')?.value ?? '';
+    const phone = el('phone')?.value ?? '';
+    const comment = el('comment')?.value ?? '';
+    const consentRequired = !!el('consentRequired')?.checked;
+
+    return (
+      validators.name(name) &&
+      validators.email(email) &&
+      validators.phone(phone) &&
+      validators.comment(comment) &&
+      validators.consentRequired(consentRequired)
+    );
+  }
+
+  const submitBtn = el('submitBtn');
+  const hint = el('formHint');
+
+  function updateSubmitState() {
+    const enable = isFormValid() && !state.submitting;
+    if (submitBtn) submitBtn.disabled = !enable;
+  }
+
+  // live-валидация на ввод
+  const bindLiveValidation = () => {
+    const map = [
+      ['name', 'nameErr', (v) => validators.name(v)],
+      ['email', 'emailErr', (v) => validators.email(v)],
+      ['phone', 'phoneErr', (v) => validators.phone(v)],
+      ['comment', 'commentErr', (v) => validators.comment(v)],
+    ];
+
+    map.forEach(([id, errId, check]) => {
+      const input = el(id);
+      const errEl = el(errId);
+      if (!input) return;
+      input.addEventListener('input', () => {
+        setError(input, errEl, !check(input.value));
+        updateSubmitState();
+      });
+      // первичная подсветка (не агрессивная): без ошибки
+      setError(input, errEl, false);
+    });
+
+    const cr = el('consentRequired');
+    if (cr) {
+      cr.addEventListener('change', () => {
+        show(el('consentReqErr'), !cr.checked);
+        updateSubmitState();
+      });
+    }
+    
+    const phoneInput = el('phone');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', () => {
+        let digits = phoneInput.value.replace(/\D/g, '');
+
+        // начинаем всегда с 7
+        if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+        if (!digits.startsWith('7')) digits = '7' + digits;
+
+        // ограничим 11 цифрами
+        digits = digits.slice(0, 11);
+
+        // формат: +7 (999) 123-45-67
+        let formatted = '+7';
+        if (digits.length > 1) {
+          formatted += ' (' + digits.slice(1, 4);
+        }
+        if (digits.length >= 4) {
+          formatted += ') ' + digits.slice(4, 7);
+        }
+        if (digits.length >= 7) {
+          formatted += '-' + digits.slice(7, 9);
+        }
+        if (digits.length >= 9) {
+          formatted += '-' + digits.slice(9, 11);
+        }
+
+        phoneInput.value = formatted;
+        updateSubmitState();
+      });
+    }
+  };
+
+  bindLiveValidation();
+  updateSubmitState(); // первичная инициализация
+
+  async function submit(e) {
+    e.preventDefault();
+    if (state.submitting) return;
+
+    // honeypot (если заполнен — прерываем молча)
+    if (el('website')?.value) return;
+
+    const name = el('name').value;
+    const email = el('email').value;
+    const phone = el('phone').value;
+    const comment = el('comment').value;
+    const consentRequired = el('consentRequired').checked;
+    const consentOptional = el('consentOptional')?.checked ?? false;
+
+    const v = {
+      name: validators.name(name),
+      email: validators.email(email),
+      phone: validators.phone(phone),
+      comment: validators.comment(comment),
+      consentRequired: validators.consentRequired(consentRequired),
+    };
+
+    setError(el('name'), el('nameErr'), !v.name);
+    setError(el('email'), el('emailErr'), !v.email);
+    setError(el('phone'), el('phoneErr'), !v.phone);
+    setError(el('comment'), el('commentErr'), !v.comment);
+    show(el('consentReqErr'), !v.consentRequired);
+    updateSubmitState();
+
+    if (Object.values(v).some(ok => !ok)) return;
+
+    const payload = {
+      form_name: 'DevSecOps',   // заголовок проставляет фронт
+      site: location.hostname,
+      name,
+      email,
+      phone,
+      comment,
+      consentOptional,          // Y/N проставит бэк в нужное поле
+      consentRequired,          // для аналитики/логов
+    };
+
+    try {
+      state.submitting = true;
+      updateSubmitState();
+      if (hint) hint.textContent = 'Отправляем… Это займёт несколько секунд.';
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) {
+        throw new Error(data.message || 'Ошибка отправки');
+      }
+
+      if (hint) hint.textContent = 'Заявка отправлена. Мы свяжемся с вами в течение 1–2 рабочих дней.';
+      form.reset();
+    } catch (err) {
+      if (hint) hint.textContent = 'Не получилось отправить. Попробуйте ещё раз.';
+      console.error(err);
+    } finally {
+      state.submitting = false;
+      updateSubmitState();
+    }
+  }
+
+  form.addEventListener('submit', submit);
+
+  // --- спец. обработка ссылок в label ---
+  // --- ссылки внутри label: 1 клик = toggle чекбокса, 2 клика = открыть ссылку ---
+  document.querySelectorAll('#leadForm label').forEach(label => {
+    const checkbox = label.querySelector('input[type="checkbox"]');
+    if (!checkbox) return;
+
+    label.querySelectorAll('a').forEach(link => {
+      let clickTimer = null;
+
+      // единый обработчик клика: откладываем действие, чтобы отловить возможный dblclick
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // если скоро будет dblclick — не переключаем чекбокс
+        if (clickTimer) clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => {
+          // одиночный клик: переключаем чекбокс и шлём change
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+        }, 220); // таймаут под двойной клик
+      });
+
+      link.addEventListener('dblclick', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
+        // двойной клик: открываем ссылку
+        window.open(link.href, '_blank', 'noopener');
+      });
+    });
+  });
+
+
+}

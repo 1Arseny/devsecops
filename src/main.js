@@ -9,7 +9,7 @@ import { initForwhomSection } from './sections/for-whom.js';
 import { initRealcasesSection } from './sections/real-cases.js';
 import { initLearningFormatSection } from './sections/format.js';
 import { initLearningJourneySection } from './sections/learning-journey.js';
-import { initPriceSectionCanvas } from './sections/price-canvas.js';
+import { initPriceSectionCanvas, initPriceForm } from './sections/price-canvas.js';
 import { initFaqSectionCanvas, initFaqAccordion } from "./sections/faq.js";
 
 function enableSmoothScroll(offsetPx = 0) {
@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLearningFormatSection();
   initLearningJourneySection();
   initPriceSectionCanvas();
+  initPriceForm();
   initFaqSectionCanvas();
   initFaqAccordion(); 
 });
