@@ -391,7 +391,7 @@ function showModalSuccess() {
     if (Object.values(v).some(ok => !ok)) return;
 
     const payload = {
-      form_name: 'DevSecOps',
+      form_name: 'DevSecOps - в разработке',
       site: location.hostname,
       name,
       email,
