@@ -72,6 +72,81 @@ export function initPriceForm() {
 
   const show = (elem, on) => elem.classList.toggle('hidden', !on);
 
+  // ---------- Toast ----------
+  function ensureToastRoot() {
+    let root = document.getElementById('toast-root');
+    if (!root) {
+      root = document.createElement('div');
+      root.id = 'toast-root';
+      root.className = 'fixed inset-0 pointer-events-none z-[9999]';
+      document.body.appendChild(root);
+    }
+    return root;
+  }
+
+  function showToast(message = 'Готово! Заявка отправлена.', opts = {}) {
+    const {
+      duration = 4000,
+      icon = '✓',
+      sub = 'Мы свяжемся с вами в течение 1–2 рабочих дней.',
+    } = opts;
+
+    const root = ensureToastRoot();
+
+    const wrap = document.createElement('div');
+    wrap.setAttribute('role', 'status');
+    wrap.setAttribute('aria-live', 'polite');
+    wrap.className = `
+      pointer-events-auto
+      fixed right-6 bottom-6
+      max-w-sm
+      bg-[#222f3a]/95 border border-[#15e6cb]/20 rounded-xl shadow-2xl
+      px-4 py-3
+      text-gray-100
+      translate-y-3 opacity-0
+      transition-all duration-200 ease-out
+    `;
+
+    wrap.innerHTML = `
+      <div class="flex items-start gap-3">
+        <div class="shrink-0 mt-0.5 h-7 w-7 rounded-full bg-gradient-to-r from-[#21d4fd] to-[#13e0ba] grid place-items-center text-[#131a22] font-bold">${icon}</div>
+        <div class="flex-1">
+          <div class="text-sm font-semibold">${message}</div>
+          <div class="text-xs text-gray-300 mt-0.5">${sub}</div>
+        </div>
+        <button type="button" aria-label="Закрыть уведомление"
+          class="ml-2 text-gray-400 hover:text-white transition">×</button>
+      </div>
+    `;
+
+    // появление
+    requestAnimationFrame(() => {
+      root.appendChild(wrap);
+      requestAnimationFrame(() => {
+        wrap.classList.remove('translate-y-3', 'opacity-0');
+      });
+    });
+
+    // закрытие
+    let hideTimer = setTimeout(close, duration);
+    function close() {
+      if (!wrap.isConnected) return;
+      wrap.classList.add('translate-y-3', 'opacity-0');
+      setTimeout(() => wrap.remove(), 180);
+    }
+
+    // кнопка закрытия
+    wrap.querySelector('button')?.addEventListener('click', () => {
+      clearTimeout(hideTimer);
+      close();
+    });
+
+    // Esc закрывает
+    const onKey = (e) => { if (e.key === 'Escape') { clearTimeout(hideTimer); close(); } };
+    document.addEventListener('keydown', onKey, { once: true });
+  }
+  // ---------- /Toast ----------
+
   const validators = {
     name(v) {
       return /^[A-Za-zА-Яа-яЁё\s'-]{2,60}$/.test(v.trim());
@@ -125,12 +200,11 @@ export function initPriceForm() {
     if (submitBtn) submitBtn.disabled = !enable;
   }
 
-  // live-валидация на ввод
+  // live-валидация и маска телефона
   const bindLiveValidation = () => {
     const map = [
       ['name', 'nameErr', (v) => validators.name(v)],
       ['email', 'emailErr', (v) => validators.email(v)],
-      ['phone', 'phoneErr', (v) => validators.phone(v)],
       ['comment', 'commentErr', (v) => validators.comment(v)],
     ];
 
@@ -142,9 +216,32 @@ export function initPriceForm() {
         setError(input, errEl, !check(input.value));
         updateSubmitState();
       });
-      // первичная подсветка (не агрессивная): без ошибки
       setError(input, errEl, false);
     });
+
+    const phoneInput = el('phone');
+    const phoneErr = el('phoneErr');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', () => {
+        let digits = phoneInput.value.replace(/\D/g, '');
+
+        // нормализуем к "7..." (заменяем лидирующую 8 на 7, если есть)
+        if (digits.startsWith('8')) digits = '7' + digits.slice(1);
+        if (!digits.startsWith('7')) digits = '7' + digits;
+        digits = digits.slice(0, 11); // максимум 11 цифр
+
+        // формат: +7 (999) 123-45-67
+        let formatted = '+7';
+        if (digits.length > 1) formatted += ' (' + digits.slice(1, 4);
+        if (digits.length >= 4) formatted += ') ' + digits.slice(4, 7);
+        if (digits.length >= 7) formatted += '-' + digits.slice(7, 9);
+        if (digits.length >= 9) formatted += '-' + digits.slice(9, 11);
+
+        phoneInput.value = formatted;
+        setError(phoneInput, phoneErr, !validators.phone(formatted));
+        updateSubmitState();
+      });
+    }
 
     const cr = el('consentRequired');
     if (cr) {
@@ -153,35 +250,9 @@ export function initPriceForm() {
         updateSubmitState();
       });
     }
-    
-    const phoneInput = el('phone');
-    if (phoneInput) {
-      phoneInput.addEventListener('input', () => {
-        let digits = phoneInput.value.replace(/\D/g, '');
-
-        // начинаем всегда с 7
-        if (digits.startsWith('8')) digits = '7' + digits.slice(1);
-        if (!digits.startsWith('7')) digits = '7' + digits;
-
-        // ограничим 11 цифрами
-        digits = digits.slice(0, 11);
-
-        // формат: +7 (999) 123-45-67
-        let formatted = '+7';
-        if (digits.length > 1) {
-          formatted += ' (' + digits.slice(1, 4);
-        }
-        if (digits.length >= 4) {
-          formatted += ') ' + digits.slice(4, 7);
-        }
-        if (digits.length >= 7) {
-          formatted += '-' + digits.slice(7, 9);
-        }
-        if (digits.length >= 9) {
-          formatted += '-' + digits.slice(9, 11);
-        }
-
-        phoneInput.value = formatted;
+    const co = el('consentOptional');
+    if (co) {
+      co.addEventListener('change', () => {
         updateSubmitState();
       });
     }
@@ -190,11 +261,109 @@ export function initPriceForm() {
   bindLiveValidation();
   updateSubmitState(); // первичная инициализация
 
+function showModalSuccess() {
+  try {
+    // если вдруг осталась предыдущая — удалим
+    const prev = document.getElementById('success-overlay');
+    if (prev) prev.remove();
+
+    const prevActive = document.activeElement;
+
+    // overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'success-overlay';
+    overlay.setAttribute('role', 'presentation');
+    overlay.style.cssText = [
+      'position:fixed','inset:0','z-index:999999',
+      'display:flex','align-items:center','justify-content:center',
+      'background:rgba(0,0,0,0.7)','backdrop-filter:blur(4px)'
+    ].join(';');
+
+    // dialog
+    const modal = document.createElement('div');
+    modal.id = 'successModal';
+    modal.setAttribute('role','dialog');
+    modal.setAttribute('aria-modal','true');
+    modal.setAttribute('aria-labelledby','successTitle');
+    modal.setAttribute('aria-describedby','successDesc');
+    modal.tabIndex = -1;
+    modal.style.cssText = [
+      'background:#222f3a','color:#fff','border-radius:16px',
+      'box-shadow:0 20px 60px rgba(0,0,0,0.5)',
+      'padding:32px','width:90%','max-width:480px','text-align:center',
+      // анимация
+      'opacity:0','transform:scale(0.96)','transition:opacity .18s ease, transform .18s ease'
+    ].join(';');
+
+    modal.innerHTML = `
+      <div id="successTitle" style="font-size:22px;font-weight:800;margin-bottom:12px">Заявка отправлена!</div>
+      <p id="successDesc" style="color:#cbd5e1;margin-bottom:24px">Мы свяжемся с вами в течение 1–2 рабочих дней.</p>
+      <button id="modalCloseBtn"
+        style="
+          background:linear-gradient(90deg,#21d4fd,#13e0ba);
+          color:#131a22;font-weight:700;border:none;border-radius:12px;
+          padding:10px 20px;cursor:pointer
+        ">
+        Хорошо
+      </button>
+    `;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // запрет прокрутки фона
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    // анимация появления
+    requestAnimationFrame(() => {
+      modal.style.opacity = '1';
+      modal.style.transform = 'scale(1)';
+      // фокус в модалку
+      document.getElementById('modalCloseBtn').focus();
+    });
+
+    // закрытие
+    function close() {
+      modal.style.opacity = '0';
+      modal.style.transform = 'scale(0.96)';
+      setTimeout(() => {
+        overlay.remove();
+        document.body.style.overflow = prevOverflow;
+        if (prevActive && typeof prevActive.focus === 'function') prevActive.focus();
+        document.removeEventListener('keydown', onKey);
+      }, 180);
+    }
+
+    const onKey = (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key === 'Tab') {
+        // простая ловушка фокуса
+        const btn = document.getElementById('modalCloseBtn');
+        e.preventDefault();
+        btn.focus();
+      }
+    };
+
+    document.getElementById('modalCloseBtn').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', onKey);
+
+    console.log('[modal] success modal shown');
+  } catch (e) {
+    console.error('[modal] failed, fallback to alert', e);
+    alert('Заявка отправлена. Мы свяжемся с вами в течение 1–2 рабочих дней.');
+  }
+}
+
+
+
+
   async function submit(e) {
     e.preventDefault();
     if (state.submitting) return;
 
-    // honeypot (если заполнен — прерываем молча)
+    // honeypot
     if (el('website')?.value) return;
 
     const name = el('name').value;
@@ -222,14 +391,14 @@ export function initPriceForm() {
     if (Object.values(v).some(ok => !ok)) return;
 
     const payload = {
-      form_name: 'DevSecOps',   // заголовок проставляет фронт
+      form_name: 'DevSecOps',
       site: location.hostname,
       name,
       email,
       phone,
       comment,
-      consentOptional,          // Y/N проставит бэк в нужное поле
-      consentRequired,          // для аналитики/логов
+      consentOptional,
+      consentRequired,
     };
 
     try {
@@ -249,7 +418,13 @@ export function initPriceForm() {
       }
 
       if (hint) hint.textContent = 'Заявка отправлена. Мы свяжемся с вами в течение 1–2 рабочих дней.';
+      // showToast('Заявка отправлена', { sub: 'Мы свяжемся в течение 1–2 рабочих дней.' });
+      showModalSuccess();
       form.reset();
+
+      // если у тебя по умолчанию обязательный чекбокс отмечен — вернуть его в true:
+      const cr = el('consentRequired');
+      if (cr && !cr.checked) { cr.checked = true; }
     } catch (err) {
       if (hint) hint.textContent = 'Не получилось отправить. Попробуйте ещё раз.';
       console.error(err);
@@ -261,7 +436,6 @@ export function initPriceForm() {
 
   form.addEventListener('submit', submit);
 
-  // --- спец. обработка ссылок в label ---
   // --- ссылки внутри label: 1 клик = toggle чекбокса, 2 клика = открыть ссылку ---
   document.querySelectorAll('#leadForm label').forEach(label => {
     const checkbox = label.querySelector('input[type="checkbox"]');
@@ -270,29 +444,22 @@ export function initPriceForm() {
     label.querySelectorAll('a').forEach(link => {
       let clickTimer = null;
 
-      // единый обработчик клика: откладываем действие, чтобы отловить возможный dblclick
       link.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
-
-        // если скоро будет dblclick — не переключаем чекбокс
         if (clickTimer) clearTimeout(clickTimer);
         clickTimer = setTimeout(() => {
-          // одиночный клик: переключаем чекбокс и шлём change
           checkbox.checked = !checkbox.checked;
           checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-        }, 220); // таймаут под двойной клик
+        }, 220);
       });
 
       link.addEventListener('dblclick', e => {
         e.preventDefault();
         e.stopPropagation();
         if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
-        // двойной клик: открываем ссылку
         window.open(link.href, '_blank', 'noopener');
       });
     });
   });
-
-
 }

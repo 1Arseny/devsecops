@@ -12,7 +12,7 @@ import { initLearningJourneySection } from './sections/learning-journey.js';
 import { initPriceSectionCanvas, initPriceForm } from './sections/price-canvas.js';
 import { initFaqSectionCanvas, initFaqAccordion } from "./sections/faq.js";
 
-function enableSmoothScroll(offsetPx = 0) {
+function enableSmoothScroll(offsetPx = -300) {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
