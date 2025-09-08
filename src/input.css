@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- твои существующие утилиты --- */
+/* --- существующие утилиты --- */
 @layer utilities {
   @keyframes pulse-glow {
     0%, 100% { opacity: 0.18; transform: scale(1);}
@@ -54,11 +54,10 @@
   }
 }
 
-/* твои reveal-утилиты оставил как есть */
+
 .reveal { opacity: 0; transform: translateY(1.5rem); }
 .reveal.show { opacity: 1; transform: translateY(0); }
 
-/* FAQ как было */
 .faq-answer {
   max-height: 0;
   opacity: 0;

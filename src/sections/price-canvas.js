@@ -422,7 +422,7 @@ function showModalSuccess() {
       showModalSuccess();
       form.reset();
 
-      // если у тебя по умолчанию обязательный чекбокс отмечен — вернуть его в true:
+      //  по умолчанию обязательный чекбокс отмечен — вернуть его в true:
       const cr = el('consentRequired');
       if (cr && !cr.checked) { cr.checked = true; }
     } catch (err) {
