@@ -88,7 +88,7 @@ export function initPriceForm() {
     const {
       duration = 4000,
       icon = '✓',
-      sub = 'Мы свяжемся с вами в течение 1–2 рабочих дней.',
+      sub = 'Мы свяжемся с вами в ближайшее время.',
     } = opts;
 
     const root = ensureToastRoot();
@@ -297,7 +297,7 @@ function showModalSuccess() {
 
     modal.innerHTML = `
       <div id="successTitle" style="font-size:22px;font-weight:800;margin-bottom:12px">Заявка отправлена!</div>
-      <p id="successDesc" style="color:#cbd5e1;margin-bottom:24px">Мы свяжемся с вами в течение 1–2 рабочих дней.</p>
+      <p id="successDesc" style="color:#cbd5e1;margin-bottom:24px">Мы свяжемся с вами в ближайшее время.</p>
       <button id="modalCloseBtn"
         style="
           background:linear-gradient(90deg,#21d4fd,#13e0ba);
@@ -352,7 +352,7 @@ function showModalSuccess() {
     console.log('[modal] success modal shown');
   } catch (e) {
     console.error('[modal] failed, fallback to alert', e);
-    alert('Заявка отправлена. Мы свяжемся с вами в течение 1–2 рабочих дней.');
+    alert('Заявка отправлена. Мы свяжемся с вами в ближайшее время.');
   }
 }
 
@@ -417,8 +417,7 @@ function showModalSuccess() {
         throw new Error(data.message || 'Ошибка отправки');
       }
 
-      if (hint) hint.textContent = 'Заявка отправлена. Мы свяжемся с вами в течение 1–2 рабочих дней.';
-      // showToast('Заявка отправлена', { sub: 'Мы свяжемся в течение 1–2 рабочих дней.' });
+      if (hint) hint.textContent = 'Заявка отправлена. Мы свяжемся с вами в ближайшее время.';
       showModalSuccess();
       form.reset();
 
