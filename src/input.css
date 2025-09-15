@@ -65,4 +65,20 @@
   transition: max-height .35s ease, opacity .35s ease;
 }
 .faq-answer.open { opacity: 1; }
-  
+
+/* можно в общий css */
+#lb-stage {
+  overflow: hidden;          /* чтобы картинка не залезала на миниатюры */
+  touch-action: none;        /* даём JS обрабатывать pinch/pan */
+}
+#lb-img {
+  -webkit-user-drag: none;
+  user-select: none;
+  will-change: transform;
+}
+#lb-stage { overflow: hidden; touch-action: none; }
+#lb-img   { -webkit-user-drag:none; user-select:none; will-change: transform; }
+
+#lb-stage.grab  #lb-img { cursor: grab; }
+#lb-stage.drag  #lb-img { cursor: grabbing; }
+
