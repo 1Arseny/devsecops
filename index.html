@@ -598,12 +598,33 @@
 
   <div class="flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-3xl z-10">
 
-    <!-- Блок с ценой (плейсхолдер) -->
-    <div class="bg-[#1e293b] bg-opacity-90 rounded-2xl shadow-xl p-8 flex flex-col items-center gap-3 w-full md:w-1/2 border border-[#15e6cb]/20">
-      <div class="text-5xl font-extrabold text-[#15e6cb] mb-2 tracking-tight drop-shadow-[0_0_10px_#15e6cb44]">
-        <span id="price-amount" class=" select-none">125 990 ₽</span>
+    <!-- Блок с ценами -->
+    <div class="bg-[#1e293b] bg-opacity-90 rounded-2xl shadow-xl p-8 flex flex-col items-center gap-4 w-full md:w-1/2 border border-[#15e6cb]/20">
+      <!-- Физлица -->
+      <div class="flex flex-col items-center">
+        <div class="text-xs uppercase tracking-wider text-[#9fe9dc] mb-1 px-2 py-1 rounded bg-[#13313a] border border-[#23b29e]/30">
+          Для физ. лиц
+        </div>
+        <div class="text-5xl font-extrabold text-[#15e6cb] tracking-tight drop-shadow-[0_0_10px_#15e6cb44] leading-none">
+          <span id="price-amount" class="select-none">125&nbsp;990&nbsp;₽</span>
+        </div>
       </div>
-      <div class="flex flex-wrap items-center justify-center gap-2">
+
+      <!-- Разделитель -->
+      <div class="w-full h-px bg-gradient-to-r from-transparent via-[#15e6cb33] to-transparent"></div>
+
+      <!-- Юрлица -->
+      <div class="flex flex-col items-center">
+        <div class="text-xs uppercase tracking-wider text-[#b5e7ff] mb-1 px-2 py-1 rounded bg-[#2a3540] border border-[#21d4fd]/20">
+          Для юр. лиц
+        </div>
+        <div class="text-4xl md:text-5xl font-extrabold text-[#8fe3d6] tracking-tight leading-none">
+          <span id="price-amount-legal" class="select-none">151&nbsp;188&nbsp;₽</span>
+        </div>
+      </div>
+
+      <!-- Бейджи -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mt-2">
         <span class="px-3 py-1 rounded-lg bg-[#13313a] text-[#9fe9dc] text-xs border border-[#23b29e]/30">Рассрочка доступна</span>
         <span class="px-3 py-1 rounded-lg bg-[#2a3540] text-[#b5e7ff] text-xs border border-[#21d4fd]/20">На первый поток скидка 10%</span>
       </div>
@@ -656,7 +677,6 @@
         <p id="commentErr" class="text-xs text-red-400 hidden">Слишком длинный комментарий.</p>
       </div>
 
-
       <!-- Обязательное согласие -->
       <label class="flex items-start gap-3 text-sm text-gray-300" tabindex="5">
         <input id="consentRequired" type="checkbox" checked
@@ -696,8 +716,6 @@
 
   </div>
 </section>
-
-
 
 <section id="skills-results" class="relative w-full flex flex-col items-center justify-center bg-[#111827] text-gray-100 py-16 px-4 gap-12 overflow-hidden">
   <!-- Фоновый canvas для анимации -->
