@@ -95,6 +95,7 @@
     </a>
   </div>
 </section>
+
 <section id="why-course" class="relative w-full flex flex-col items-center justify-center bg-[#1e293b] text-gray-100 py-16 px-4 gap-10 overflow-hidden">
   <!-- Canvas только для фона -->
   <canvas id="whycourse-canvas" class="w-full h-full absolute inset-0 z-0 pointer-events-none"></canvas>
@@ -148,6 +149,50 @@
 </div>
 
 </section>
+<section id="promo-combo" class="relative py-20 px-4 bg-[#0f172a] text-gray-100 overflow-hidden">
+
+  <!-- Canvas (анимация точек — можно удалить, если не нужна) -->
+  <canvas id="promo-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+  <!-- Основной контент -->
+  <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center text-center gap-6">
+
+    <!-- Заголовок -->
+    <h2 class="text-3xl md:text-5xl font-extrabold leading-tight">
+      <span class="text-indigo-400">Собери своё обучение!</span><br />
+      Комбо из двух курсов со скидкой <span class="text-indigo-300">20%</span>
+    </h2>
+
+    <!-- Описание -->
+    <p class="text-base md:text-lg text-gray-300 max-w-2xl leading-relaxed">
+      Используй промокод <strong class="text-indigo-300">COMBO20</strong> до 
+      <strong class="text-indigo-300">19 декабря</strong>, чтобы получить выгодное предложение.  
+      Акция действует на все программы: DevSecOps, SOC, WAPT, AD, Linux, OSINT, Reverse, DFIR, DevOps и другие.
+    </p>
+
+    <!-- Плашка промокода -->
+    <div class="bg-gray-800/80 border border-indigo-700/40 
+                text-indigo-300 text-lg font-semibold px-6 py-3 
+                rounded-xl shadow-lg backdrop-blur-md">
+      Промокод: <span class="text-indigo-400 font-bold">COMBO20</span>
+    </div>
+
+    <!-- CTA кнопка -->
+    <a href="#price-register"
+       class="bg-gradient-to-r from-indigo-600 to-blue-500 
+              hover:from-indigo-700 hover:to-blue-600 
+              text-white font-bold px-7 py-3 rounded-xl shadow-xl transition">
+      🎁 Получить скидку 20%
+    </a>
+
+    <!-- Сноска -->
+    <p class="text-xs text-gray-400 mt-2">
+      *Не суммируется с другими акциями. Доступно только для физических лиц.
+    </p>
+
+  </div>
+</section>
+
 <section id="for-whom" class="relative w-full flex flex-col items-center justify-center bg-[#1e293b] text-gray-100 py-20 px-4 gap-10 overflow-hidden">
   <!-- Glow фон -->
   <div class="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
