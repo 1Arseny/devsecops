@@ -29,8 +29,351 @@
 
   <!-- Favicon -->
   <link rel="icon" href="./img/favicon.ico" type="image/x-icon">
+
+  <!-- ========== MIS TRACKING: HEAD START ========== -->
+
+<!-- Стили Telegram виджета -->
+<style>
+/* Плавающая кнопка Telegram */
+.tg-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.tg-widget__btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0088cc 0%, #0077b5 100%);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 50px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.tg-widget__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 136, 204, 0.5);
+  background: linear-gradient(135deg, #0099dd 0%, #0088cc 100%);
+}
+
+.tg-widget__btn:active {
+  transform: translateY(0);
+}
+
+.tg-widget__icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.tg-widget__text {
+  white-space: nowrap;
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+  .tg-widget {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .tg-widget__btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  /* На мобильных можно скрыть текст, оставив только иконку */
+  /* .tg-widget__text { display: none; } */
+}
+
+/* Pulse анимация для привлечения внимания (опционально) */
+@keyframes tg-pulse {
+  0% { box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4); }
+  50% { box-shadow: 0 4px 30px rgba(0, 136, 204, 0.6); }
+  100% { box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4); }
+}
+
+.tg-widget__btn--pulse {
+  animation: tg-pulse 2s infinite;
+}
+</style>
+
+<!-- ========== MIS TRACKING: HEAD END ========== -->
+
 </head>
 <body>
+
+<!-- ========== MIS TRACKING: BODY START ========== -->
+
+<script>
+window.TELEGRAM_COURSE = 'custom_devsecops';  // <-- ИЗМЕНИТЬ!
+</script>
+
+<!-- Codeby Tracker -->
+<script>
+(function() {
+  var s = document.createElement('script');
+  s.src = 'https://tracker.codeby.school/tracker.min.js';
+  s.async = true;
+  s.onload = function() {
+    if (window.CodebyTracker) {
+      CodebyTracker.init({
+        supabaseUrl: 'https://fdqmcnrsppscyxuefihh.supabase.co',
+        supabaseKey: 'sb_publishable_zvZSB4FEg512USuzAoyZyA_X5tct2J9',
+        debug: false,
+        autoTrackPageViews: true,
+        autoTrackScrollDepth: false,
+        autoTrackTimeOnPage: true,
+        autoDecorateLinks: true,
+        sessionTimeoutMinutes: 30
+      });
+      console.log('✅ CodebyTracker инициализирован');
+    }
+  };
+  document.body.appendChild(s);
+})();
+</script>
+
+<!-- Telegram виджет с MIS интеграцией -->
+<script>
+(function() {
+  'use strict';
+
+  // ========================================
+  // КОНФИГУРАЦИЯ ВИДЖЕТА
+  // ========================================
+  var config = {
+    courseName: window.TELEGRAM_COURSE || 'unknown',
+    botUsername: 'CodebyAcademyBot',
+    deepLinkBase: 'https://bot.codeby.school/start',
+    yandexMetrikaId: null,  // Укажите ID метрики если нужен трекинг
+    debug: false
+  };
+
+  // ========================================
+  // ФУНКЦИИ ВИДЖЕТА
+  // ========================================
+
+  // Получить client_id из трекера
+  function getClientId() {
+    // Способ 1: Из CodebyTracker
+    if (window.CodebyTracker && window.CodebyTracker.instance) {
+      var data = window.CodebyTracker.instance.getData ?
+                 window.CodebyTracker.instance.getData() : null;
+      if (data && data.clientId) return data.clientId;
+    }
+
+    // Способ 2: Из CodebyTracker.getClientId()
+    if (window.CodebyTracker && typeof window.CodebyTracker.getClientId === 'function') {
+      return window.CodebyTracker.getClientId();
+    }
+
+    // Способ 3: Из localStorage
+    var stored = localStorage.getItem('codeby_client_id');
+    if (stored) return stored;
+
+    // Способ 4: Из cookies
+    var match = document.cookie.match(/codeby_client_id=([^;]+)/);
+    if (match) return decodeURIComponent(match[1]);
+
+    return '';
+  }
+
+  // Генерация deep link
+  function getDeepLink() {
+    var clientId = getClientId();
+    var params = new URLSearchParams();
+
+    if (clientId) params.append('cid', clientId);
+    params.append('course', config.courseName);
+
+    var url = params.toString()
+      ? config.deepLinkBase + '?' + params.toString()
+      : 'https://t.me/' + config.botUsername;
+
+    if (config.debug) console.log('[TG Widget] Deep link:', url);
+    return url;
+  }
+
+  // Открытие Telegram с трекингом
+  function openTelegram(source) {
+    var deepLink = getDeepLink();
+
+    // Трекинг в CodebyTracker
+    if (window.CodebyTracker && window.CodebyTracker.instance &&
+        typeof window.CodebyTracker.instance.trackEvent === 'function') {
+      window.CodebyTracker.instance.trackEvent('telegram_intent', {
+        course: config.courseName,
+        source: source
+      });
+    }
+
+    // Трекинг в Яндекс.Метрике
+    if (typeof ym !== 'undefined' && config.yandexMetrikaId) {
+      ym(config.yandexMetrikaId, 'reachGoal', 'telegram_click', {
+        course: config.courseName,
+        source: source
+      });
+    }
+
+    console.log('🚀 Открываем Telegram (' + source + '):', deepLink);
+    window.open(deepLink, '_blank');
+  }
+
+  // ========================================
+  // ЗАПОЛНЕНИЕ ФОРМ TILDA
+  // ========================================
+
+  // Получить UTM из URL
+  function getUTMParams() {
+    var params = new URLSearchParams(window.location.search);
+    return {
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || '',
+      utm_content: params.get('utm_content') || '',
+      utm_term: params.get('utm_term') || ''
+    };
+  }
+
+  // Заполнить скрытые поля формы
+  function fillFormFields(form) {
+    var clientId = getClientId();
+    var utm = getUTMParams();
+
+    // Карта полей: name атрибут → значение
+    var fields = {
+      'client_id': clientId,
+      'codeby_client_id': clientId,
+      'utm_source': utm.utm_source,
+      'utm_medium': utm.utm_medium,
+      'utm_campaign': utm.utm_campaign,
+      'utm_content': utm.utm_content,
+      'utm_term': utm.utm_term
+    };
+
+    Object.keys(fields).forEach(function(name) {
+      var input = form.querySelector('input[name="' + name + '"]');
+      if (input && fields[name]) {
+        input.value = fields[name];
+        if (config.debug) console.log('[MIS] Заполнено поле', name, '=', fields[name]);
+      }
+    });
+  }
+
+  // Обработать все формы на странице
+  function processAllForms() {
+    var forms = document.querySelectorAll('form, .t-form');
+    forms.forEach(function(form) {
+      fillFormFields(form);
+    });
+    if (config.debug) console.log('[MIS] Обработано форм:', forms.length);
+  }
+
+  // ========================================
+  // ИНИЦИАЛИЗАЦИЯ
+  // ========================================
+
+  // Обработчик кликов по Telegram элементам
+  document.addEventListener('click', function(e) {
+    // data-telegram-button="true" — универсальный атрибут
+    var button = e.target.closest('[data-telegram-button="true"]');
+    if (button) {
+      e.preventDefault();
+      var source = button.dataset.telegramSource || 'button';
+      openTelegram(source);
+      return;
+    }
+
+    // data-telegram-cta — CTA кнопки
+    var cta = e.target.closest('[data-telegram-cta]');
+    if (cta) {
+      e.preventDefault();
+      openTelegram('cta');
+      return;
+    }
+
+    // Виджет с id="telegram-link"
+    var widget = e.target.closest('#telegram-link');
+    if (widget) {
+      e.preventDefault();
+      openTelegram('widget');
+      return;
+    }
+  });
+
+  // Экспорт API
+  window.TelegramWidget = {
+    open: openTelegram,
+    getDeepLink: getDeepLink,
+    getClientId: getClientId
+  };
+
+  // Заполнение форм при загрузке
+  function init() {
+    // Первичное заполнение
+    processAllForms();
+
+    // MutationObserver для динамически загружаемых форм Tilda
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length) {
+          // Небольшая задержка для полной загрузки формы
+          setTimeout(processAllForms, 100);
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    // Повторное заполнение через интервал (fallback для Tilda)
+    var attempts = 0;
+    var interval = setInterval(function() {
+      processAllForms();
+      attempts++;
+      if (attempts >= 10) clearInterval(interval);
+    }, 500);
+
+    console.log('✅ MIS интеграция для Tilda инициализирована');
+    console.log('📱 Telegram курс:', config.courseName);
+  }
+
+  // Запуск инициализации
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
+<!-- ========== MIS TRACKING: BODY END ========== -->
+
+
+    <!-- Telegram плавающий виджет -->
+    <div class="tg-widget">
+    <a href="#" id="telegram-link" class="tg-widget__btn tg-widget__btn--pulse">
+        <svg class="tg-widget__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.37-.49 1.02-.74 3.98-1.73 6.64-2.87 7.97-3.43 3.79-1.58 4.58-1.86 5.09-1.87.11 0 .37.03.53.17.14.12.18.28.2.45-.02.07-.02.27-.04.42z"/>
+        </svg>
+        <span class="tg-widget__text">Написать в Telegram</span>
+    </a>
+    </div>
+
 
 <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-16 pb-20 gap-6 bg-[#0f172a] text-gray-100 relative overflow-hidden">
   <!-- 🖼 canvas: анимация точек -->
@@ -140,49 +483,6 @@
   </div>
 </div>
 
-</section>
-<section id="promo-combo" class="relative py-20 px-4 bg-[#0f172a] text-gray-100 overflow-hidden">
-
-  <!-- Canvas (анимация точек — можно удалить, если не нужна) -->
-  <canvas id="promo-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
-
-  <!-- Основной контент -->
-  <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center text-center gap-6">
-
-    <!-- Заголовок -->
-    <h2 class="text-3xl md:text-5xl font-extrabold leading-tight">
-      <span class="text-indigo-400">Собери своё обучение!</span><br />
-      Комбо из двух курсов со скидкой <span class="text-indigo-300">20%</span>
-    </h2>
-
-    <!-- Описание -->
-    <p class="text-base md:text-lg text-gray-300 max-w-2xl leading-relaxed">
-      Используй промокод <strong class="text-indigo-300">COMBO20</strong> до 
-      <strong class="text-indigo-300">19 декабря</strong>, чтобы получить выгодное предложение.  
-      Акция действует на все программы: DevSecOps, SOC, WAPT, AD, Linux, OSINT, Reverse, DFIR, DevOps и другие.
-    </p>
-
-    <!-- Плашка промокода -->
-    <div class="bg-gray-800/80 border border-indigo-700/40 
-                text-indigo-300 text-lg font-semibold px-6 py-3 
-                rounded-xl shadow-lg backdrop-blur-md">
-      Промокод: <span class="text-indigo-400 font-bold">COMBO20</span>
-    </div>
-
-    <!-- CTA кнопка -->
-    <a href="#price-register"
-       class="bg-gradient-to-r from-indigo-600 to-blue-500 
-              hover:from-indigo-700 hover:to-blue-600 
-              text-white font-bold px-7 py-3 rounded-xl shadow-xl transition">
-      🎁 Получить скидку 20%
-    </a>
-
-    <!-- Сноска -->
-    <p class="text-xs text-gray-400 mt-2">
-      *Не суммируется с другими акциями. Доступно только для физических лиц.
-    </p>
-
-  </div>
 </section>
 
 <section id="for-whom" class="relative w-full flex flex-col items-center justify-center bg-[#1e293b] text-gray-100 py-20 px-4 gap-10 overflow-hidden">
@@ -737,6 +1037,14 @@
           <a class="text-orange-300 underline" href="https://codeby.school/documents/Согласие_на_получение_рассылки_для_лендинга.pdf" target="_blank" rel="noopener">Согласие на получение рекламно-информационных материалов</a>
         </span>
       </label>
+      <!-- Скрытые поля для аналитики -->
+      <input type="hidden" name="client_id" id="client_id">
+
+      <input type="hidden" name="utm_source" id="utm_source">
+      <input type="hidden" name="utm_medium" id="utm_medium">
+      <input type="hidden" name="utm_campaign" id="utm_campaign">
+      <input type="hidden" name="utm_content" id="utm_content">
+      <input type="hidden" name="utm_term" id="utm_term">
 
       <!-- honeypot -->
       <input type="text" id="website" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
